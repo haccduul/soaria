@@ -1,0 +1,620 @@
+/* ==========================================================================
+   Soaria.AI — Clean, Organized Stylesheet
+   --------------------------------------------------------------------------
+   - Color system & tokens
+   - Base / Reset
+   - Layout Utilities
+   - Header & Navigation
+   - Hero
+   - Cards & Glassmorphism
+   - Buttons & Links
+   - Sections & Grids
+   - Timeline
+   - Features (icon cards)
+   - Pricing
+   - Contact
+   - Footer
+   - Neural Glass Background & Effects
+   - Chat Demo (avatars & bubbles)
+   - Icon Images (PNG)
+   - Smooth Scroll & Reveal
+   - Mobile Gutters / Safe Area
+   - Responsive (≤960px, ≤640px)
+   ========================================================================== */
+
+/* ============== Color System & Tokens ==================================== */
+:root{
+  --bg:#0c0c14;
+  --text:#e9e9f2;
+  --muted:#b8b8d6;
+  --card:#11111c;
+  --line:#2a2a44;
+
+  --brand1:#3b2aa6;   /* indigo */
+  --brand2:#8a3cf0;   /* violet */
+  --brand3:#b15cff;   /* light violet */
+
+  --grad1:linear-gradient(135deg,var(--brand1),var(--brand2));
+  --grad2:linear-gradient(135deg,var(--brand2),var(--brand3));
+
+  --radius:18px;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+
+  --glowA: rgba(177,92,255,.55);
+  --glowB: rgba(59,42,166,.55);
+  --glowSoft: 28px;
+
+  --header-offset: 80px;        /* used for scroll-margin on anchors */
+  --mobile-gutter: clamp(16px, 5vw, 28px);
+}
+
+/* ============== Base / Reset ============================================= */
+*{ box-sizing:border-box }
+html,body{ height:100% }
+html{ scroll-behavior:smooth }
+body{
+  margin:0;
+  line-height:1.6;
+  font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  color:var(--text);
+  background:var(--bg);
+  overflow-x:hidden; /* prevent rogue horizontal scroll */
+}
+img{ max-width:100%; display:block }
+a{ color:inherit }
+
+/* ============== Layout Utilities ========================================= */
+.container{ max-width:1100px; margin:0 auto; padding:24px }
+.section{ padding:56px 0 }
+.section-title{ font-size:34px; margin:0 0 10px }
+.section-lead{ color:var(--muted); margin:0 0 22px }
+
+.grid{ display:grid; gap:18px }
+.cards-3{ grid-template-columns:repeat(3,1fr) }
+.cards-4{ grid-template-columns:repeat(4,1fr) }
+
+/* Ensure anchors don't hide under sticky header */
+section,[id]{ scroll-margin-top:var(--header-offset) }
+
+/* ============== Header & Navigation ====================================== */
+.site-header{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding-block:14px;
+  background:rgba(15,15,26,.55);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+}
+.brand{ display:flex; align-items:center; gap:0; text-decoration:none; color:var(--text) }
+.brand-mark{
+  width:96px; height:auto;
+  filter: drop-shadow(0 10px 26px rgba(0,0,0,.35))
+          drop-shadow(0 0 18px rgba(177,92,255,.18));
+}
+.site-header .nav{ margin-left:auto }
+.site-header .nav a{
+  position:relative; display:inline-flex; align-items:center;
+  padding:8px 10px; border-radius:10px; text-decoration:none; opacity:.95;
+  transition:color .2s ease, background-color .2s ease, transform .2s ease;
+}
+/* Gradient underline */
+.site-header .nav a::after{
+  content:""; position:absolute; left:10px; right:10px; bottom:4px; height:2px;
+  background:linear-gradient(90deg,var(--brand1),var(--brand3));
+  transform:scaleX(0); transform-origin:left center; transition:transform .28s ease;
+  border-radius:999px; opacity:.9;
+}
+.site-header .nav a:hover{
+  background:rgba(255,255,255,.04); transform:translateY(-1px);
+  box-shadow:0 6px 18px rgba(0,0,0,.20);
+}
+.site-header .nav a:hover::after{ transform:scaleX(1) }
+.site-header .nav a:focus-visible{
+  outline:0; box-shadow:0 0 0 2px rgba(255,255,255,.12),0 0 0 4px rgba(138,60,240,.35);
+}
+/* Contact button variant */
+.site-header .nav .btn{ margin-left:8px }
+.site-header .nav .btn.btn-outline{
+  border:1px solid #3a3a58; box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+}
+.site-header .nav .btn.btn-outline:hover{
+  background:var(--grad1); border-color:transparent; color:#fff; transform:translateY(-1px);
+  box-shadow:0 0 0 1px rgba(177,92,255,.25) inset, 0 10px 26px rgba(138,60,240,.25);
+}
+
+/* ============== Hero ====================================================== */
+.hero{ padding:56px 0 24px }
+.hero-grid{ display:grid; grid-template-columns:1.2fr .8fr; gap:32px; align-items:center }
+.hero .lead{ color:var(--muted); max-width:60ch }
+.gradient-1{ background:radial-gradient(900px 400px at 50% -20%,rgba(177,92,255,.24),transparent 60%) }
+.accent{ background:var(--grad2); -webkit-background-clip:text; background-clip:text; color:transparent }
+
+/* ============== Cards & Glassmorphism ==================================== */
+.card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:22px }
+.shadow{ box-shadow:var(--shadow) }
+.glass{
+  border-radius:16px;
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(18px);
+}
+
+/* ============== Buttons & Links ========================================== */
+.cta-row{ display:flex; gap:12px; margin:18px 0 }
+.btn{ display:inline-block; border-radius:999px; padding:12px 18px; font-weight:700; text-decoration:none; border:1px solid transparent }
+.btn-solid{ background:var(--grad1); color:#fff }
+.btn-outline{ border-color:#3a3a58; color:var(--text) }
+.btn-ghost{ background:transparent; color:var(--text); border-color:#30304a }
+.btn:hover{ transform:translateY(-1px); transition:transform .2s ease }
+
+.trust-row{ display:flex; gap:16px; list-style:none; padding:0; margin:12px 0 0; color:var(--muted) }
+
+/* ============== Sections & Grids ========================================= */
+.badge{ position:absolute; left:0; top:2px; width:32px; height:32px; border-radius:50%; display:grid; place-items:center; color:#fff; background:var(--grad2); font-weight:800 }
+.timeline{ display:grid; gap:16px; margin-top:12px }
+.step{ position:relative; padding-left:46px }
+
+/* ============== Features (icon cards) ==================================== */
+.icon-card .icon-circle{ display:none } /* replaced by PNG icons if used */
+.icon-card .icon{
+  width:40px; height:40px; object-fit:contain; display:block; margin-bottom:10px;
+  filter:drop-shadow(0 6px 16px rgba(0,0,0,.35)) brightness(1.08) saturate(1.05);
+}
+
+/* Hover glow shared with pricing */
+.card.icon-card,
+.card.pricing{
+  position:relative;
+  transition:transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 8px 22px rgba(0,0,0,.35);
+  will-change:transform, box-shadow;
+}
+.card.icon-card:hover,
+.card.icon-card:focus-within,
+.card.pricing:hover,
+.card.pricing:focus-within{
+  transform:translateY(-4px);
+  border-color:rgba(177,92,255,.45);
+  box-shadow:
+    0 0 0 1px rgba(177,92,255,.35) inset,
+    0 10px 30px rgba(0,0,0,.35),
+    0 0 var(--glowSoft) 0 var(--glowA),
+    0 0 calc(var(--glowSoft)*.55) 6px var(--glowB);
+}
+.card.icon-card::after,
+.card.pricing::after{
+  content:""; position:absolute; inset:-1px; border-radius:inherit; pointer-events:none;
+  background:linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.14) 35%, rgba(255,255,255,0) 70%);
+  opacity:0; transform:translateX(-12%); transition:opacity .28s ease, transform .6s ease;
+}
+.card.icon-card:hover::after,
+.card.icon-card:focus-within::after,
+.card.pricing:hover::after,
+.card.pricing:focus-within::after{ opacity:.65; transform:translateX(0%) }
+
+/* ============== Pricing =================================================== */
+.pricing{ display:flex; flex-direction:column; gap:12px; align-items:flex-start }
+.pricing .price{ font-size:28px; font-weight:800 }
+.pricing .price .unit{ font-size:14px; color:var(--muted) }
+.pricing.featured{
+  border:1px solid transparent;
+  background:linear-gradient(var(--card),var(--card)) padding-box,
+             linear-gradient(135deg,rgba(59,42,166,.6),rgba(177,92,255,.6)) border-box;
+  position:relative;
+}
+.pricing .ribbon{
+  position:absolute; top:-12px; right:16px; background:var(--grad2);
+  padding:6px 10px; border-radius:999px; font-size:12px; font-weight:800;
+}
+.list{ list-style:none; padding:0; margin:0; color:var(--muted) }
+.list li{ padding:6px 0 }
+
+/* ============== Contact =================================================== */
+.contact-grid{ grid-template-columns:1fr .9fr; align-items:start }
+.contact-form label{ display:flex; flex-direction:column; gap:6px; margin-bottom:12px }
+.contact-form input,.contact-form textarea{
+  background:#0f0f19; border:1px solid #2b2b45; border-radius:12px; padding:12px; color:var(--text);
+}
+.form-status{ min-height:22px; margin-top:6px; color:var(--muted) }
+.brand-lockup{ margin-top:18px; opacity:.8 }
+
+/* ============== Footer ==================================================== */
+.site-footer{ border-top:1px solid var(--line); padding:28px 0; margin-top:24px }
+.footer-grid{ display:grid; grid-template-columns:1.6fr 1fr 1fr; gap:18px; align-items:center }
+.f-brand p{ color:var(--muted) }
+.f-nav a{ display:inline-block; margin-right:12px; color:var(--muted); text-decoration:none }
+.site-footer .f-brand img{ width:150px; height:auto; opacity:.9 }  /* small, balanced logo */
+.tiny{ font-size:12px; color:var(--muted) }
+
+/* Center CTA & polish button */
+.site-footer .f-cta{ display:flex; flex-direction:column; align-items:center; gap:10px }
+.site-footer .f-cta .btn{
+  padding:12px 20px; border-radius:999px; border:1px solid rgba(255,255,255,.12); background:transparent;
+  box-shadow:0 0 0 1px rgba(177,92,255,.25) inset, 0 6px 20px rgba(138,60,240,.15);
+}
+.site-footer .f-cta .btn:hover{ background:var(--grad1); border-color:transparent; color:#fff; transform:translateY(-1px) }
+
+/* ============== Neural Glass Background & Effects ======================== */
+.neural-background{
+  position:fixed; inset:0; z-index:-3;
+  background:
+    radial-gradient(1200px 800px at 15% 85%, rgba(59,42,166,.35), transparent 60%),
+    radial-gradient(1200px 800px at 85% 15%, rgba(177,92,255,.35), transparent 60%),
+    radial-gradient(1000px 600px at 50% 40%, rgba(177,92,255,.20), transparent 55%),
+    linear-gradient(180deg,#07070d,#0c0c14 40%, #07070d);
+  animation:bgPulse 14s ease-in-out infinite;
+}
+@keyframes bgPulse{
+  0%,100%{filter:brightness(.95) saturate(1.05)}
+  50%{filter:brightness(1.05) saturate(1.15)}
+}
+.geometric-shapes{ position:fixed; inset:0; z-index:-2; pointer-events:none; overflow:hidden }
+.shape{ position:absolute; border:1px solid rgba(177,92,255,.25); animation:floatShape 22s linear infinite }
+.shape:nth-child(1){ width:100px; height:100px; left:10%; animation-delay:0s }
+.shape:nth-child(2){ width:60px; height:60px; left:70%; animation-delay:-6s; border-radius:50% }
+.shape:nth-child(3){ width:80px; height:80px; left:30%; animation-delay:-12s; transform:rotate(45deg) }
+.shape:nth-child(4){ width:120px; height:120px; left:50%; animation-delay:-18s }
+@keyframes floatShape{
+  from{ transform:translateY(100vh) rotate(0deg); opacity:0 }
+  10%,90%{ opacity:1 }
+  to{ transform:translateY(-120px) rotate(360deg); opacity:0 }
+}
+.neural-lines{ position:fixed; inset:0; z-index:-1; pointer-events:none }
+.neural-line{
+  position:absolute; left:0; width:100%; height:1px; opacity:.2;
+  background:linear-gradient(90deg,transparent,#b15cff,transparent);
+  transform:scaleX(.6); transition:opacity .2s, transform .2s;
+}
+.neural-line:nth-child(1){ top:22% }
+.neural-line:nth-child(2){ top:42%; background:linear-gradient(90deg,transparent,#8a3cf0,transparent) }
+.neural-line:nth-child(3){ top:64%; background:linear-gradient(90deg,transparent,#3b2aa6,transparent) }
+
+/* Reveal on scroll */
+.reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease }
+.reveal.visible{ opacity:1; transform:translateY(0) }
+
+/* ============== Chat Demo (avatars & bubbles) ============================ */
+.screen-top{ display:flex; gap:10px; align-items:center; border-bottom:1px solid rgba(255,255,255,.1); padding:10px 14px; font-weight:600 }
+.status-dot{ width:10px; height:10px; border-radius:50%; background:radial-gradient(circle,var(--brand3),var(--brand2) 60%) }
+.screen-body{ padding:16px; display:flex; flex-direction:column; gap:10px }
+.bubble{ max-width:80%; padding:10px 12px; border-radius:14px; line-height:1.5 }
+.bubble.bot{ background:rgba(138,60,240,.18); border:1px solid rgba(138,60,240,.4) }
+.bubble.user{ background:#1a1a2b; border:1px solid #2c2c4a; margin-left:auto }
+
+.bubble-row{ display:flex; align-items:flex-start; gap:14px; margin:8px 0 }
+.bubble-row.bot{ justify-content:flex-start }
+.bubble-row.user{ justify-content:flex-end }
+.bubble-row.user .bubble{ order:1 }
+.bubble-row.user .avatar{ order:2 }
+
+.avatar{
+  width:44px; height:44px; border-radius:50%; object-fit:cover;
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 6px 18px rgba(0,0,0,.35);
+  background:#0f0f19;
+}
+.bubble-row.bot .avatar{
+  box-shadow:0 0 0 1px rgba(177,92,255,.25), 0 6px 18px rgba(138,60,240,.25);
+}
+
+/* ============== Icon Images (PNG) ======================================== */
+.card.icon-card:hover .icon{ transform:translateY(-1px); transition:transform .25s ease }
+
+/* ============== Mobile Gutters / Safe Area =============================== */
+@supports(padding: max(0px)){
+  :root{
+    --safe-left: env(safe-area-inset-left);
+    --safe-right: env(safe-area-inset-right);
+  }
+}
+@media (max-width:640px){
+  .container{
+    padding-left:max(var(--mobile-gutter), var(--safe-left));
+    padding-right:max(var(--mobile-gutter), var(--safe-right));
+  }
+  .section{ padding-top:48px; padding-bottom:48px }
+  .brand-mark{ width:120px }                   /* smaller header logo on phones */
+  .bubble{ max-width:88% }
+  .avatar{ width:36px; height:36px }
+
+  /* Footer stacks & centers on mobile */
+  .site-footer .container{
+    padding-left:max(16px, 5vw, var(--safe-left));
+    padding-right:max(16px, 5vw, var(--safe-right));
+  }
+  .site-footer .footer-grid{
+    grid-template-columns:1fr; row-gap:16px; justify-items:center; text-align:center;
+  }
+  .site-footer .f-nav{
+    display:flex; flex-wrap:wrap; gap:12px 16px; justify-content:center;
+  }
+  .site-footer .f-cta .btn{
+    display:inline-flex; justify-content:center; width:min(100%, 320px); padding-left:18px; padding-right:18px;
+  }
+}
+
+/* ===== Mobile: keep header nav on ONE line (scrollable) ===== */
+@media (max-width: 640px){
+  /* override any earlier rule that hid the nav on phones */
+  .site-header .nav{
+    display: flex !important;
+    flex: 1 1 auto;
+    min-width: 0;                  /* allow overflow handling */
+    justify-content: flex-end;     /* push links right of the logo */
+    gap: 0px;                     /* tighter spacing on mobile */
+    overflow-x: auto;              /* enable horizontal scroll if needed */
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;         /* hide scrollbar (Firefox) */
+  }
+  .site-header .nav::-webkit-scrollbar{ display: none; } /* hide scrollbar (WebKit) */
+
+  /* keep links on a single line */
+  .site-header .nav a{
+    white-space: nowrap;
+    padding: 8px 10px;             /* smaller hit area to fit more items */
+    font-size: 14px;               /* optional: slightly smaller text */
+  }
+
+  /* make sure the header layout doesn't force wrapping */
+  .site-header{
+    gap: 0px;
+  }
+  .brand-mark{
+    width: 72px;                   /* keep logo modest on mobile */
+  }
+}
+
+
+/* ============== Responsive (≤960px) ====================================== */
+@media (max-width:960px){
+  .hero-grid{ grid-template-columns:1fr }
+  .cards-3{ grid-template-columns:1fr 1fr }
+  .cards-4{ grid-template-columns:1fr 1fr }
+  .contact-grid{ grid-template-columns:1fr }
+  .footer-grid{ grid-template-columns:1fr }
+}
+
+/* ===== Footer desktop layout fix: left = logo+tagline+CTA, right = nav ===== */
+@media (min-width: 961px){
+  .site-footer .footer-grid{
+    /* two main columns: left stack and right nav */
+    grid-template-columns: 1.4fr 1fr;    /* tweak ratios to taste */
+    column-gap: 24px;
+    align-items: center;
+  }
+
+  /* Place items by their order in index.html */
+  .site-footer .footer-grid > :nth-child(1){ /* .f-brand (logo) */
+    grid-column: 1; justify-self: start; text-align: left;
+  }
+  .site-footer .footer-grid > :nth-child(2){ /* .f-tagline (p) */
+    grid-column: 1; justify-self: start; text-align: left; margin-top: 6px;
+  }
+  .site-footer .footer-grid > :nth-child(3){ /* wrapper <div> that contains .f-nav */
+    grid-column: 2; justify-self: end; text-align: right;
+  }
+  .site-footer .footer-grid > :nth-child(4){ /* .f-cta (email + ©) */
+    grid-column: 1; justify-self: start; text-align: left; margin-top: 8px;
+  }
+
+  /* Make the nav look good on the right */
+  .site-footer .f-nav{
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;          /* wraps nicely if narrow */
+  }
+}
+
+
+
+/* =========================
+   Responsive Enhancements
+   (drop this at the end of styles.css)
+   Fixes tablet gutters, prevents header/hero text cut-off,
+   and improves container spacing across breakpoints.
+   ========================= */
+
+:root{
+  --tablet-gutter: clamp(24px, 6vw, 48px);
+  --desktop-gutter: clamp(28px, 5.5vw, 56px);
+}
+
+/* Base container now uses fluid inline padding */
+.container{
+  max-width: 1100px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5.5vw, 44px);
+  padding-block: 24px;
+}
+
+/* Safer hero heading (prevents cut-off on small screens) */
+.hero h1{
+  font-size: clamp(28px, 6.2vw, 56px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
+  text-wrap: balance;           /* modern wrap */
+  overflow-wrap: anywhere;      /* fallback to avoid clipping */
+}
+
+/* Let long nav/cta rows wrap gracefully on narrow viewports */
+.cta-row{ flex-wrap: wrap }
+.trust-row{ flex-wrap: wrap }
+
+/* Tablet-specific gutters & layout tuning (641px–1024px) */
+@media (min-width: 641px) and (max-width: 1024px){
+  .container{
+    padding-inline: var(--tablet-gutter);
+  }
+
+  /* Ensure hero grid breathes on tablets */
+  .hero{ padding-top: 64px; padding-bottom: 32px }
+  .hero-grid{ gap: 28px }
+
+  /* Cards: prefer 2-up on tablets for breathing room */
+  .cards-3{ grid-template-columns: 1fr 1fr }
+  .cards-4{ grid-template-columns: 1fr 1fr }
+
+  /* Footer spacing so content doesn't kiss the edges */
+  .site-footer .container{ padding-inline: var(--tablet-gutter) }
+}
+
+/* Larger tablets / small laptops (1025px–1280px) */
+@media (min-width: 1025px) and (max-width: 1280px){
+  .container{
+    padding-inline: var(--desktop-gutter);
+  }
+}
+
+/* Small phones: tighten but keep safe gutters (keep your existing rules) */
+@media (max-width: 640px){
+  /* Keep the existing mobile header/nav overrides from your file,
+     just add a tiny tweak so the hero has a bit more room */
+  .hero{ padding-top: 56px }
+}
+
+/* Hardening: avoid any accidental clipping from parent containers */
+h1,h2,h3,h4{ overflow-wrap: anywhere }
+
+/* Optional: ensure header (site-header) never forces overflow */
+.site-header{
+  min-width: 0;
+}
+.site-header .brand,
+.site-header .nav{ min-width: 0 }
+
+
+/* ======= Mobile Hamburger Navigation (add at end) ======= */
+/* Base button (hidden on desktop) */
+.nav-toggle{
+  display:none;
+  position:relative;
+  width:42px; height:36px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.04);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  align-items:center; justify-content:center;
+  cursor:pointer;
+}
+.nav-toggle .bar{
+  position:relative; display:block; width:22px; height:2px; background:#e9e9f2; border-radius:2px;
+}
+.nav-toggle .bar + .bar{ margin-top:5px }
+
+/* Mobile dropdown panel */
+.mobile-nav{
+  position:absolute;
+  top:calc(100% + 8px);
+  right:var(--mobile-gutter);
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;
+  box-shadow:0 12px 28px rgba(0,0,0,.4);
+  padding:10px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  z-index:1000;
+  min-width: 210px;
+}
+.mobile-nav a{
+  display:block;
+  padding:10px 12px;
+  border-radius:10px;
+  text-decoration:none;
+  background:transparent;
+}
+.mobile-nav a:hover{ background:rgba(255,255,255,.06) }
+.mobile-nav .btn{ margin:6px 0 0 }
+
+/* On phones: show hamburger, hide desktop nav */
+@media (max-width: 640px){
+  .desktop-nav{ display:none !important }
+  .nav-toggle{ display:inline-flex }
+  .site-header{ position:sticky; top:10px; z-index:50 } /* keeps tap target accessible */
+}
+
+/* Optional animation state when open */
+.nav-toggle[aria-expanded="true"] .bar:nth-child(1){ transform: translateY(7px) rotate(45deg) }
+.nav-toggle[aria-expanded="true"] .bar:nth-child(2){ opacity:0 }
+.nav-toggle[aria-expanded="true"] .bar:nth-child(3){ transform: translateY(-7px) rotate(-45deg) }
+.nav-toggle .bar{ transition: transform .2s ease, opacity .2s ease }
+
+/* Make sure header is a proper containing block for the dropdown */
+.site-header{ position: relative }
+
+/* ======= Mobile Nav Hardening (drop at end of styles.css) ======= */
+:root{ --mobile-gutter: clamp(16px, 5.5vw, 24px) }
+
+/* Hide desktop links when hamburger is active */
+@media (max-width: 640px){
+  .desktop-nav{ display:none !important }
+  .nav-toggle{ display:inline-flex }
+}
+
+/* Ensure hidden attribute actually hides the panel */
+.mobile-nav[hidden]{ display:none !important }
+
+/* Prevent hamburger deformation from global button styles */
+.nav-toggle{
+  padding:0 !important;
+  line-height:0;
+  display:none; /* default off, enabled in media query */
+  align-items:center; justify-content:center;
+  width:42px; height:36px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.05);
+  box-shadow: 0 2px 10px rgba(0,0,0,.25);
+}
+.nav-toggle .bar{
+  width:22px; height:2px; border-radius:2px;
+  background:#e9e9f2;
+  transition: transform .2s ease, opacity .2s ease;
+}
+.nav-toggle .bar + .bar{ margin-top:5px }
+.nav-toggle[aria-expanded="true"] .bar:nth-child(1){ transform: translateY(7px) rotate(45deg) }
+.nav-toggle[aria-expanded="true"] .bar:nth-child(2){ opacity:0 }
+.nav-toggle[aria-expanded="true"] .bar:nth-child(3){ transform: translateY(-7px) rotate(-45deg) }
+
+/* Dropdown panel positioning & spacing */
+.site-header{ position:relative } /* anchor for absolute menu */
+.mobile-nav{
+  position:absolute;
+  top:calc(100% + 8px);
+  right:var(--mobile-gutter);
+  z-index:1000;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-width: 210px;
+  padding:10px;
+  border-radius:14px;
+  background:linear-gradient(180deg,rgba(20,20,28,.9),rgba(20,20,28,.82));
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 12px 28px rgba(0,0,0,.45);
+}
+.mobile-nav a{
+  display:block;
+  padding:10px 12px;
+  border-radius:10px;
+  text-decoration:none;
+}
+.mobile-nav a:hover{ background:rgba(255,255,255,.06) }
+.mobile-nav .btn{ margin:6px 0 0 }
+
+/* --- Mobile hamburger wins: hide desktop links, show toggle (specific override) --- */
+@media (max-width: 640px){
+  /* Hide ONLY the desktop nav on phones (beats earlier .site-header .nav rule) */
+  .site-header .nav.desktop-nav{ display: none !important; }
+
+  /* Show hamburger button */
+  .nav-toggle{ display: inline-flex !important; }
+
+  /* Ensure dropdown stays hidden until opened by JS */
+  .mobile-nav[hidden]{ display: none !important; }
+}
