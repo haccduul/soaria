@@ -66,46 +66,35 @@ function submitContact(e){
 })();
 
 
-// --- Mobile Hamburger Toggle (Soaria.AI) ---
-(function(){
-  const header = document.querySelector('.site-header');
-  const btn = document.querySelector('.nav-toggle');
-  const menu = document.getElementById('mobileNav');
-  if(!header || !btn || !menu) return;
-  
-  // Ensure starting state: closed
-  btn.setAttribute('aria-expanded', 'false');
-  menu.setAttribute('hidden','');
+const toggle = document.querySelector('.nav-toggle');
+const mobileNav = document.getElementById('mobileNav');
 
-  function closeMenu(){
-    btn.setAttribute('aria-expanded', 'false');
-    menu.setAttribute('hidden','');
-    menu.classList.remove('open');
-    document.removeEventListener('click', outside);
-  }
-  function outside(e){
-    if(!header.contains(e.target)) closeMenu();
+toggle.addEventListener('click', () => {
+  const open = toggle.getAttribute('aria-expanded') === 'true';
+  toggle.setAttribute('aria-expanded', String(!open));
+  mobileNav.hidden = open;
+});
+
+// --- Collapse mobile menu after a selection ---
+(function () {
+  const toggle = document.querySelector('.nav-toggle');
+  const mobileNav = document.getElementById('mobileNav');
+  if (!toggle || !mobileNav) return;
+
+  function closeMenu() {
+    mobileNav.hidden = true;
+    toggle.setAttribute('aria-expanded', 'false');
   }
 
-  btn.addEventListener('click', function(e){
-    e.stopPropagation();
-    const open = this.getAttribute('aria-expanded') === 'true';
-    if(open){
-      closeMenu();
-    }else{
-      this.setAttribute('aria-expanded', 'true');
-      menu.removeAttribute('hidden');
-      menu.classList.add('open');
-      setTimeout(()=>document.addEventListener('click', outside), 0);
-    }
+  // When a link in the dropdown is clicked, close the menu
+  mobileNav.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href]');
+    if (!link) return;
+
+    // If you're smooth-scrolling to a hash, let the browser start it, then close
+    requestAnimationFrame(closeMenu);
   });
 
-  // Close on ESC
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape'){ closeMenu(); }
-  });
-
-  // Collapse to desktop state if resized up
-  const mq = window.matchMedia('(min-width: 641px)');
-  mq.addEventListener?.('change', () => { if(mq.matches) closeMenu(); });
+  // Also close on hash changes triggered by smooth-scroll updates
+  window.addEventListener('hashchange', closeMenu);
 })();
