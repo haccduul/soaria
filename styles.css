@@ -618,3 +618,73 @@ h1,h2,h3,h4{ overflow-wrap: anywhere }
   /* Ensure dropdown stays hidden until opened by JS */
   .mobile-nav[hidden]{ display: none !important; }
 }
+/* Reset any gradient/lines on the button itself */
+.nav-toggle{
+  background-image: none !important;     /* prevents the long stripes */
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 44px; height: 36px;             /* your glassy pill can stay */
+  padding: 0;
+}
+
+/* Draw the three bars with a span + ::before/::after */
+.hamburger,
+.hamburger::before,
+.hamburger::after{
+  content: "";
+  display: block;
+  position: relative;
+  width: 22px;                           /* bar width */
+  height: 2px;                           /* bar thickness */
+  background: #e9e9f2;                   /* or var(--text) */
+  border-radius: 2px;
+  transition: transform .25s ease, opacity .2s ease;
+}
+
+
+
+
+
+/* Stack the top and bottom bars */
+.hamburger::before,
+.hamburger::after{
+  position: absolute;
+  left: 0;
+}
+.hamburger::before{ transform: translateY(-7px); }
+.hamburger::after { transform: translateY( 7px); }
+
+/* X animation when menu is open */
+.nav-toggle[aria-expanded="true"] .hamburger{ opacity: 0; }
+.nav-toggle[aria-expanded="true"] .hamburger::before{
+  opacity: 1;
+  transform: rotate(45deg);
+}
+.nav-toggle[aria-expanded="true"] .hamburger::after{
+  opacity: 1;
+  transform: rotate(-45deg);
+}
+
+/* Optional: brighten on hover/focus */
+.nav-toggle:hover .hamburger,
+.nav-toggle:focus-visible .hamburger,
+.nav-toggle:hover .hamburger::before,
+.nav-toggle:hover .hamburger::after{
+  background: #fff;
+}
+
+
+/* Show hamburger only on mobile; show desktop links only on desktop */
+@media (max-width: 640px){
+  .site-header .nav.desktop-nav { display: none !important; }   /* hide desktop links */
+  .nav-toggle { display: inline-flex !important; }               /* show hamburger */
+  .mobile-nav[hidden] { display: none !important; }              /* keep dropdown hidden until opened */
+}
+
+@media (min-width: 641px){
+  .nav-toggle,
+  .mobile-nav { display: none !important; }                      /* hide hamburger & dropdown on desktop */
+  .site-header .nav.desktop-nav { display: flex !important; }    /* ensure desktop links show */
+}
