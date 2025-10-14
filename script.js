@@ -1,17 +1,69 @@
-// Simple JS for Soaria.AI demo interactions
-document.getElementById("year").textContent = new Date().getFullYear();
+/// ===== Contact form → n8n webhook =====
+(function () {
+  const form = document.querySelector('.contact-form');
+  const statusEl = document.getElementById('form-status');
+  if (!form) return;
 
-function submitContact(e){
-  e.preventDefault();
-  const data = Object.fromEntries(new FormData(e.target).entries());
-  const subject = encodeURIComponent("Soaria.AI — Demo Request");
-  const body = encodeURIComponent(
-    `Name: ${data.name}\nEmail: ${data.email}\nCompany: ${data.company}\n\nMessage:\n${data.message}`
-  );
-  window.location.href = `mailto:awhite@soaria.ai?subject=${subject}&body=${body}`;
-  document.getElementById('form-status').textContent = "Thanks! We opened your email client to send the message.";
-  return false;
-}
+  // 🔒 store your webhook in one place
+  const N8N_WEBHOOK_URL = 'https://jimmyjohn.app.n8n.cloud/webhook/contact-soaira'; // prod URL
+
+  // light spam trap (hidden honeypot)
+  const honeypotName = 'website'; // add a hidden input with this name in HTML (see below)
+
+  async function postJSON(url, data) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 10000); // 10s timeout
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+        signal: ctrl.signal,
+      });
+      clearTimeout(timer);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json().catch(() => ({}));
+    } catch (err) {
+      clearTimeout(timer);
+      throw err;
+    }
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    statusEl.textContent = 'Sending…';
+
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    // Honeypot check – bots often fill hidden fields
+    if (data[honeypotName]) {
+      statusEl.textContent = 'Thanks!'; // pretend success
+      form.reset();
+      return;
+    }
+
+    // include some context
+    data._meta = {
+      page: location.href,
+      ts: new Date().toISOString(),
+    };
+
+    try {
+      await postJSON(N8N_WEBHOOK_URL, data);
+      statusEl.textContent = 'Thanks! We’ll reach out shortly.';
+      form.reset();
+    } catch (err) {
+      // Fallback to mailto if webhook fails
+      statusEl.textContent = 'Having trouble—opening your email client…';
+      const subject = encodeURIComponent('Soaria.AI — Contact');
+      const body = encodeURIComponent(
+        `Name: ${data.name}\nEmail: ${data.email}\nCompany: ${data.company}\n\nMessage:\n${data.message}`
+      );
+      location.href = `mailto:contact@soaria.ai?subject=${subject}&body=${body}`;
+    }
+  });
+})();
+
 
 // --- Neural background motion & scroll reveals ---
 (function(){
